@@ -58,7 +58,7 @@
 
     // Cursor hover state
     const hoverTargets = document.querySelectorAll(
-      "a, button, [data-magnetic], .project-card, .detail-card, .contact-card, .skill-card, .hero-photo",
+      "a, button, [data-magnetic], .project-card, .detail-card, .contact-card, .skill-card, .cert-card, .hero-photo",
     );
     hoverTargets.forEach((el) => {
       el.addEventListener("mouseenter", () =>
@@ -341,7 +341,7 @@
   if (isTouchDevice) {
     // On touch, tapping a card gives it the active state
     const touchCards = document.querySelectorAll(
-      ".project-card, .detail-card, .contact-card, .skill-card",
+      ".project-card, .detail-card, .contact-card, .skill-card, .cert-card",
     );
     touchCards.forEach((card) => {
       card.addEventListener(
@@ -596,6 +596,34 @@
         const x = (window.innerWidth / 2 - e.clientX) / 60;
         const y = (window.innerHeight / 2 - e.clientY) / 60;
         heroContent.style.transform = `translate(${x}px, ${y}px)`;
+      }
+    });
+  }
+
+  // ==================================
+  //   CERTIFICATIONS SHOW MORE / LESS
+  // ==================================
+  const certToggleBtn = document.getElementById("cert-toggle-btn");
+  const certTimeline = document.getElementById("cert-timeline");
+  if (certToggleBtn && certTimeline) {
+    certToggleBtn.addEventListener("click", () => {
+      const isExpanded = certTimeline.classList.toggle("expanded");
+      certToggleBtn.classList.toggle("active");
+      const textEl = certToggleBtn.querySelector(".cert-toggle-text");
+      if (textEl) {
+        textEl.textContent = isExpanded ? "Show Less" : "Show More";
+      }
+
+      // When expanding, trigger reveal for newly-visible cards
+      if (isExpanded) {
+        const hiddenCards = certTimeline.querySelectorAll(
+          ".cert-card:not(.revealed)",
+        );
+        hiddenCards.forEach((card, i) => {
+          setTimeout(() => {
+            card.classList.add("revealed");
+          }, i * 60);
+        });
       }
     });
   }
