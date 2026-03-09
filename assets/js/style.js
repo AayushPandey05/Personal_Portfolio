@@ -224,8 +224,8 @@
   // ==================================
   const typedTextEl = document.getElementById("typed-text");
   const roles = [
-    "Student",
     "Developer",
+    "Cloud Architect",
     "Problem Solver",
     "Cloud & System Security Enthusiast",
   ];
@@ -262,45 +262,55 @@
   }
   setTimeout(typeEffect, 1200);
 
-// ==================================
-//   TEXT SCRAMBLE ON PAGE LOAD
-// ==================================
+  // ==================================
+  //   TEXT SCRAMBLE (LOAD + HOVER)
+  // ==================================
 
-const scrambleEls = document.querySelectorAll("[data-scramble]");
-const chars =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const scrambleEls = document.querySelectorAll("[data-scramble]");
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-function scrambleText(el) {
-  const originalText = el.textContent;
-  let iteration = 0;
-
-  const interval = setInterval(() => {
-    el.textContent = originalText
-      .split("")
-      .map((char, index) => {
-        if (index < iteration) return originalText[index];
-        return chars[Math.floor(Math.random() * chars.length)];
-      })
-      .join("");
-
-    iteration += 0.5;
-
-    if (iteration >= originalText.length) {
-      clearInterval(interval);
-      el.textContent = originalText;
-    }
-  }, 40);
-}
-
-setTimeout(() => {
-  scrambleEls.forEach((el, i) => {
-    setTimeout(() => {
-      scrambleText(el);
-    }, i * 300);
+  // Store original text
+  scrambleEls.forEach((el) => {
+    el.dataset.original = el.textContent;
   });
-}, 1200);
 
-  
+  function scrambleText(el) {
+    const originalText = el.dataset.original;
+    let iteration = 0;
+
+    const interval = setInterval(() => {
+      el.textContent = originalText
+        .split("")
+        .map((char, index) => {
+          if (index < iteration) return originalText[index];
+          return chars[Math.floor(Math.random() * chars.length)];
+        })
+        .join("");
+
+      iteration += 0.5;
+
+      if (iteration >= originalText.length) {
+        clearInterval(interval);
+        el.textContent = originalText;
+      }
+    }, 40);
+  }
+
+  // Run once when page loads
+  setTimeout(() => {
+    scrambleEls.forEach((el, i) => {
+      setTimeout(() => scrambleText(el), i * 300);
+    });
+  }, 1200);
+
+  // Hover animation (desktop)
+  scrambleEls.forEach((el) => {
+    el.addEventListener("mouseenter", () => {
+      scrambleText(el);
+    });
+  });
+
   // ==================================
   //   3D TILT EFFECT ON CARDS (desktop only)
   // ==================================
