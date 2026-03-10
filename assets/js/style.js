@@ -224,8 +224,8 @@
   // ==================================
   const typedTextEl = document.getElementById("typed-text");
   const roles = [
-    "Student",
     "Backend Developer",
+    "Student",
     "Cloud & DevOps",
     "Problem Solver",
     "Cloud & System Security Enthusiast",
@@ -630,7 +630,7 @@
         btn.textContent = originalText;
         btn.parentElement.style.background = "";
         contactForm.reset();
-      }, 1100);
+      }, 1000);
     });
   }
 
@@ -678,7 +678,7 @@
         window.open("recruiter.html", "_blank");
         // Revert the toggle on the current page so it stays as User
         setTimeout(() => {
-           e.target.checked = false;
+          e.target.checked = false;
         }, 500);
       } else {
         // They unchecked it (from Recruiter page)
